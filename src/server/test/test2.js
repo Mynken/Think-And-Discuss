@@ -7,7 +7,7 @@ describe('addTwoNumbers()', function () {
       var sum1 = x + y;
   
       // 2. ACT
-      var sum2 = 36;
+      var sum2 = 6;
   
       // 3. ASSERT
       expect(sum2).to.be.equal(sum1);
