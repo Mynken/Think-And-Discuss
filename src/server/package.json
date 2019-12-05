@@ -7,7 +7,7 @@
         "test": "test"
     },
     "mocha": {
-        "spec": "./test/"
+        "spec": "./test/**/*.test.js"
     },
     "scripts": {
         "test": "mocha",
