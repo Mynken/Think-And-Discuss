@@ -1,8 +1,10 @@
 import Vue from 'vue';
 import App from './App.vue';
+import router from './router/index';
 
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import Panel from 'primevue/panel';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 
@@ -11,6 +13,9 @@ Vue.use(ToastService);
 Vue.component('InputText', InputText);
 Vue.component('Button', Button);
 Vue.component('Toast', Toast);
+Vue.component('Panel', Panel);
+
+Vue.config.productionTip = false;
 
 import 'primevue/resources/themes/nova-light/theme.css';
 import 'primevue/resources/primevue.min.css';
@@ -20,4 +25,7 @@ Vue.config.productionTip = false;
 
 new Vue({
     render: h => h(App),
-}).$mount('#app')
+    router,
+    template: '<App/>',
+    components: { App }
+}).$mount('#app');

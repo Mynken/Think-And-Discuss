@@ -1,19 +1,17 @@
 <template>
   <div id="app">
     <p>Header</p>
-    <HelloWorld msg="Welcome to Think & Discuss App"/>
+    <router-link to="/">Home</router-link>
+    <router-view></router-view>
     <div class="footer">Footer</div>
+    <Toast/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
+  name: 'app'
 }
 </script>
 
