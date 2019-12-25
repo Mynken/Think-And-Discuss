@@ -14,7 +14,7 @@
 export default {
   methods: {
     goToPage(page) {
-      page ? this.$router.push('/login') : this.$router.push('/login');
+      page ? this.$router.push('/login') : this.$router.push('/register');
 			// this.$toast.add({severity: 'success', summary: page, detail: 'Data Saved', life: 3000});
 		}
   }
