@@ -10,7 +10,7 @@ const router = new Router({
     mode: 'history',
     routes: [{
             path: '/',
-            name: 'Login',
+            name: 'Welcome',
             component: IntialForm
         },
         {
