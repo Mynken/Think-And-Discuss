@@ -13,7 +13,7 @@
 export default {
     methods: {
     createGame() {
-      // TODO: createGame
+      this.$router.push('/newGame');
 		}
   },
       mounted() {

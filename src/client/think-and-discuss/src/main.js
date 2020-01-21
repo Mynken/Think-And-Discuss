@@ -4,6 +4,9 @@ import router from './router/index';
 import store from './app/store/store';
 import VueSocketIO from 'vue-socket.io';
 
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Panel from 'primevue/panel';

@@ -25,13 +25,13 @@
 export default {
   methods: {
     goToPage(page) {
-      // page ? this.$router.push('/login') : this.$router.push('/register');
+      page ? this.$router.push('/login') : this.$router.push('/register');
       // this.$toast.add({severity: 'success', summary: page, detail: 'Data Saved', life: 3000});
-      console.log(page);
-      this.$socket.emit('news', { hello: 'world12312' });
-      this.$socket.on('my other event', function (data) {
-        console.log(data);
-      });
+      // console.log(page);
+      // this.$socket.emit('news', { hello: 'world12312' });
+      // this.$socket.on('my other event', function (data) {
+      //   console.log(data);
+      
 		}
   },
   computed: {
