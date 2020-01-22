@@ -3,7 +3,7 @@
     <p>Header</p>
     <router-link to="/">Home</router-link>
     <router-view></router-view>
-    <div class="footer">Footer</div>
+    <div class="footer">Footer test</div>
     <Toast/>
   </div>
 </template>
