@@ -1,5 +1,6 @@
 <template>
-	<div class="row">
+<div>
+	<div class="row gameRow">
 		<div class="col-sm-4">
 			<Panel header="Original text">
 				<Editor
@@ -17,8 +18,8 @@
 		</div>
 		<div class="col-sm-4">
 			<Panel header="Key phrases">
-				Make analytics Great again!
 				<ul id="example-1">
+				Make analytics Great again!
 					<li v-for="(item, index) in analyticList" v-bind:key="index">{{ item }}</li>
 				</ul>
 			</Panel>
@@ -35,6 +36,7 @@
 				</Editor>
 			</Panel>
 		</div>
+	</div>
 	</div>
 </template>
 
@@ -82,4 +84,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.gameRow {
+	margin-right: 0px;
+	margin-left: 0px;
+}
+
 </style>
