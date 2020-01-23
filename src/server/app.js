@@ -5,6 +5,9 @@ const session = require('express-session');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const errorHandler = require('errorhandler');
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
 //Configure mongoose's promise to global promise
 mongoose.promise = global.Promise;
@@ -13,7 +16,7 @@ mongoose.promise = global.Promise;
 const isProduction = process.env.NODE_ENV === 'production';
 
 //Initiate our app
-const app = express();
+
 
 //Configure our app
 app.use(cors());
@@ -28,7 +31,7 @@ if (!isProduction) {
 }
 
 //Configure Mongoose
-mongoose.connect('mongodb://localhost/think-and-discuss', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost/think-and-discuss', { useUnifiedTopology: true, useNewUrlParser: true });
 mongoose.set('debug', true);
 
 //Models & routes
@@ -37,29 +40,51 @@ require('./config/passport');
 app.use(require('./routes'));
 
 //Error handlers & middlewares
-if (!isProduction) {
-    app.use((err, req, res) => {
-        console.log(res.status);
-        req.status(err.status || 500);
+// if (!isProduction) {
+//     app.use((err, req, res) => {
 
-        res.json({
-            errors: {
-                message: err.message,
-                error: err,
-            },
-        });
+//         req.status(err.status || 500);
+
+//         res.json({
+//             errors: {
+//                 message: err.message,
+//                 error: err,
+//             },
+//         });
+//     });
+// }
+
+// app.use((err, req, res) => {
+//     res.status(err.status || 500);
+//     console.log(res);
+//     res.json({
+//         errors: {
+//             message: err.message,
+//             error: {},
+//         },
+//     });
+// });
+
+server.listen(8000, () => console.log('Server running on http://localhost:8000/'));
+// server.listen(8012);
+
+io.on('connection', function(socket) {
+
+    socket.on('connection', function(qwe) {
+        console.log('Socket connection established');
     });
-}
 
-app.use((err, req, res) => {
-    res.status(err.status || 500);
+    socket.on('private message', function(from, msg) {
+        console.log('I received a private message by ', from, ' saying ', msg);
+    });
 
-    res.json({
-        errors: {
-            message: err.message,
-            error: {},
-        },
+    socket.on('news', function(data) {
+        console.log(data);
+        socket.emit('my other event', { my: 'data' });
+    });
+
+
+    socket.on('disconnect', () => {
+        console.log("A user disconnected");
     });
 });
-
-app.listen(8000, () => console.log('Server running on http://localhost:8000/'));
