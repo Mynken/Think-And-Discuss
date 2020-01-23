@@ -1,10 +1,8 @@
-
 <template>
 	
 	<div class="container-fluid">
 	<div class="row">
 
-<!-- 	1st panel, Main text Editor -->
 		<div id="editorColumn" class="col-sm-5">
 				<h4 class="panel1HeaderText">Source Text</h4>
 				<Editor
@@ -38,7 +36,6 @@
 			
 			<div id="multipleRows" class="row" v-for="(item, index) in analyticList" v-bind:key="index">
 
-<!-- 			2nd panel, Quotes -->
 				<div id="quotesColumn" class="col-sm-5">
 						<div>
 							<span class="example-1">{{ item }} </span>
@@ -47,26 +44,21 @@
 						<br>
 				</div>
 			
-<!-- 			3rd panel, Comments -->
 				<div id="commentsColumn" class="col-sm-7">
-					<div>
-						<!-- Test comment Editor -->
-						<Editor v-model="testText">
-							<template slot="toolbar">
-								<span class="ql-formats">
-									<select class="ql-color"></select>
-									<select class="ql-background"></select>
-								</span>
-							</template>
-						</Editor>
-					</div>
+					<Editor v-model="testText">
+						<template slot="toolbar">
+							<span class="ql-formats">
+								<select class="ql-color"></select>
+								<select class="ql-background"></select>
+							</span>
+						</template>
+					</Editor>
 				</div>
 
 
 
 			</div>
-
-<!-- 		Area for misc variables output, aka console                             -->			
+		
 			<div class="miscVariables">
 				<hr>
 				<b>Misc. variables output:</b>
