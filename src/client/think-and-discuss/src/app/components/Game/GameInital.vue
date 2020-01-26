@@ -5,18 +5,26 @@
 
 		<div id="editorColumn" class="col-sm-5">
 				<h4 class="panel1HeaderText">Source Text</h4>
+				<button v-show="editorMode" 
+						@click="editorToText">
+						Finished with quotes</button>
 				<Editor
+					v-show="editorMode"
 					v-model="turn.mainText"
 					@text-change="originalTextChanged($event)"
-					editorStyle="height: 700px"
-				>
+					editorStyle="height: 450px">
 					<template slot="toolbar">
 						<span class="ql-formats">
-							<select class="ql-color"></select>
+<!--						<select class="ql-color"></select>					-->
 							<select class="ql-background"></select>
 						</span>
 					</template>
 				</Editor>
+				<div v-show="!editorMode">
+					<button @click="textToEditor">Back to editing</button>
+					<p></p>
+					<p class="pureText" v-html="turn.mainText"></p>
+				</div>
 		</div>
 
 
@@ -34,27 +42,31 @@
 				</div>
 			</div>
 			
-			<div id="multipleRows" class="row" v-for="(item, index) in analyticList" v-bind:key="index">
+			<div id="multipleRows" class="row" v-for="(item, i) in turn.actions" v-bind:key="i">
 
 				<div id="quotesColumn" class="col-sm-5">
 						<div>
-							<span class="example-1">{{ item }} </span>
+							<span class="example-1">{{ item.post.quote }} </span>
 							<p></p>
 						</div>
 						<br>
 				</div>
 			
 				<div id="commentsColumn" class="col-sm-7">
-					<Editor v-model="testText">
-						<template slot="toolbar">
-							<span class="ql-formats">
-								<select class="ql-color"></select>
-								<select class="ql-background"></select>
-							</span>
-						</template>
-					</Editor>
+					<div>       <!--  v-on:click="mouseOverComment(i)" --> 
+						<button v-if="show[i]==false" @click="switchToEditor(i)">Write Comment</button>            
+						<button v-if="show[i]==true" @click="commentDone(i)">Done</button>      
+						<Editor v-if="show[i]==true" v-model="turn.actions[i].post.comment">
+							<template slot="toolbar">
+								<span class="ql-formats">
+<!--								<select class="ql-color"></select>             -->
+									<select class="ql-background"></select>
+								</span>
+							</template>
+						</Editor>
+						<p v-if="show[i]==false">{{ turn.actions[i].post.comment }}</p>
+					</div>
 				</div>
-
 
 
 			</div>
@@ -62,8 +74,14 @@
 			<div class="miscVariables">
 				<hr>
 				<b>Misc. variables output:</b>
+				<p>Editor mode = {{ editorMode }}</p>
 				<p>{{ analyticList }}</p>
-				<p>{{ turn.actions[0].post.quote }}</p>				                            
+				<div v-for="(item, i) in turn.actions" v-bind:key="i">
+					<p>{{ turn.actions[i].post.quote }}</p>	
+					<p>{{ turn.actions[i].post.comment }}</p>
+<!--				<p>{{ turn.actions[i].post.editorIsVisible }}</p>	    -->
+					<p>{{ show }}</p>
+				</div>
 			</div>
 		</div>
 
@@ -71,7 +89,6 @@
 	</div>
 
 	</div>
-
 
 
 </template>
@@ -83,15 +100,15 @@ export default {
 	data() {
         return {
 
-		turn: {                     	// объект данного хода
-			actions: [                	// массив действий
+		editorMode: true,
+		turn: {											// объект данного хода
+			actions: [									// массив действий
 				{   
 					post: {
-					id: 0,              // commentIndex: null,
-					quote: 'Hello, this is a dummy quote, to test "turn" object', 
-										// highlightedQuotes: [],
-					comment: '',        // commentsForQuotes: [],
-					isVisible: true,    // commentInEditorMode: [],
+					id: 0,								// commentIndex: null,
+					quote: 'Some quote', 				// highlightedQuotes: [],
+					comment: 'Some comment goes here',	// commentsForQuotes: [],
+					editorIsVisible: true,				// commentInEditorMode: [],
 					},
 				},
 			],
@@ -99,41 +116,53 @@ export default {
 		},
 
 		analyticList: [],
-		testText: '',
+		show: [0, 0, 0, 0, 0, 0, 0, 0, 0],
 		
         };
 	},
 
 	methods: {
+		textToEditor() {
+			this.editorMode = true;
+		},
+		editorToText() {
+			this.editorMode = false;
+		},
 
+		switchToEditor(i) {
+			this.show[i] = true;   
+		},
+
+		commentDone(i) {
+			this.show[i] = false;
+		},
+		
 		originalTextChanged(text) {
-			console.log('text = ', text.htmlValue);
+//			console.log('text = ', text.htmlValue);
 
 			this.analyticList = [];
+			this.turn.actions = [];
 
 			let div = document.createElement('div');
-			console.log('div = ', div);
+//			console.log('div = ', div);
 			
 			div.innerHTML = text.htmlValue;
-			console.log('div.innerHTML = ', div.innerHTML); 
+//			console.log('div.innerHTML = ', div.innerHTML); 
 
 			const spans = div.querySelectorAll('span');
-			console.log('spans = ', spans); 
+//			console.log('spans = ', spans); 
 
 			for (let i = 0; i < spans.length; i++) {
 				if (spans[i].style[0] === 'background-color') {
 					this.analyticList.push(spans[i].innerText);
+					this.turn.actions.push( {post: {quote: spans[i].innerText}} );
+//					this.turn.actions[i].post.editorIsVisible = false;
+//					this.turn.actions[i].post.comment = 'Comment #' + (i+1);
 				}
-				
 			}
-			console.log('analyticList = ', this.analyticList);
-		},
 
-//          for (let i = 0; i < spans.length; i++) {
-//				if (spans[i].style[0] === 'background-color') {
-//  				this.turn.actions[i].post.quote.push(spans[i].innerText);
-//				};
-//			};
+//			console.log('analyticList = ', this.analyticList);
+		},
 
 
 
@@ -144,6 +173,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+.pureText {
+	text-align: left;
+}
 .panel1HeaderText {
 	text-align: left;
 }
