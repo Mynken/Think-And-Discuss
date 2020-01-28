@@ -54,9 +54,9 @@
 			
 				<div id="commentsColumn" class="col-sm-7">
 					<div>       <!--  v-on:click="mouseOverComment(i)" --> 
-						<button v-if="show[i]==false" @click="switchToEditor(i)">Write Comment</button>            
-						<button v-if="show[i]==true" @click="commentDone(i)">Done</button>      
-						<Editor v-if="show[i]==true" v-model="turn.actions[i].post.comment">
+						<button v-if="item.post.editorIsVisible" @click="item.post.editorIsVisible = !item.post.editorIsVisible">Write Comment</button>            
+						<button v-if="!item.post.editorIsVisible" @click="item.post.editorIsVisible = !item.post.editorIsVisible">Done</button>      
+						<Editor v-if="!item.post.editorIsVisible" v-model="item.post.comment">
 							<template slot="toolbar">
 								<span class="ql-formats">
 <!--								<select class="ql-color"></select>             -->
@@ -64,7 +64,7 @@
 								</span>
 							</template>
 						</Editor>
-						<p v-if="show[i]==false">{{ turn.actions[i].post.comment }}</p>
+						<p v-if="item.post.editorIsVisible">{{ item.post.comment }}</p>
 					</div>
 				</div>
 
@@ -80,7 +80,6 @@
 					<p>{{ turn.actions[i].post.quote }}</p>	
 					<p>{{ turn.actions[i].post.comment }}</p>
 <!--				<p>{{ turn.actions[i].post.editorIsVisible }}</p>	    -->
-					<p>{{ show }}</p>
 				</div>
 			</div>
 		</div>
@@ -116,7 +115,6 @@ export default {
 		},
 
 		analyticList: [],
-		show: [0, 0, 0, 0, 0, 0, 0, 0, 0],
 		
         };
 	},
@@ -129,13 +127,6 @@ export default {
 			this.editorMode = false;
 		},
 
-		switchToEditor(i) {
-			this.show[i] = true;   
-		},
-
-		commentDone(i) {
-			this.show[i] = false;
-		},
 		
 		originalTextChanged(text) {
 //			console.log('text = ', text.htmlValue);
@@ -155,7 +146,7 @@ export default {
 			for (let i = 0; i < spans.length; i++) {
 				if (spans[i].style[0] === 'background-color') {
 					this.analyticList.push(spans[i].innerText);
-					this.turn.actions.push( {post: {quote: spans[i].innerText}} );
+					this.turn.actions.push( {post: {quote: spans[i].innerText, editorIsVisible: true, id: i, comment: ''}} );
 //					this.turn.actions[i].post.editorIsVisible = false;
 //					this.turn.actions[i].post.comment = 'Comment #' + (i+1);
 				}
