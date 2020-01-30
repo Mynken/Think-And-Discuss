@@ -13,6 +13,7 @@ import Panel from 'primevue/panel';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 import Editor from 'primevue/editor';
+import Card from 'primevue/card';
 
 Vue.use(ToastService);
 
@@ -27,7 +28,7 @@ Vue.use(new VueSocketIO({
     // options: { path: "/my-app/" } //Optional options
 }));
 
-
+Vue.component('Card', Card);
 Vue.component('InputText', InputText);
 Vue.component('Button', Button);
 Vue.component('Toast', Toast);
