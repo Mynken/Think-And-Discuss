@@ -36,6 +36,7 @@ mongoose.set('debug', true);
 
 //Models & routes
 require('./models/Users');
+require('./models/game/Turn');
 require('./config/passport');
 app.use(require('./routes'));
 
