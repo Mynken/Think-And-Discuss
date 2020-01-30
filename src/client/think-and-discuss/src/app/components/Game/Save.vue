@@ -75,6 +75,7 @@
 				<hr>
 				<b>Misc. variables output:</b>
 				<p>Editor mode = {{ editorMode }}</p>
+				<p>{{ analyticList }}</p>
 				<div v-for="(item, i) in turn.actions" v-bind:key="i">
 					<p>{{ turn.actions[i].post.quote }}</p>	
 					<p>{{ turn.actions[i].post.comment }}</p>
@@ -102,18 +103,18 @@ export default {
 			actions: [									// массив действий
 				{   
 					post: {
-					id: 0,
-					quote: 'Some quote',
-					comment: 'Some comment goes here',
-					editorIsVisible: true,
+					id: 0,								// commentIndex: null,
+					quote: 'Some quote', 				// highlightedQuotes: [],
+					comment: 'Some comment goes here',	// commentsForQuotes: [],
+					editorIsVisible: true,				// commentInEditorMode: [],
 					},
 				},
 			],
 			mainText: "<p>Мы уже говорили о гипотезе, которая приписывает звездным цивилизациям время жизни, <span style=\"background-color: rgb(255, 255, 0);\">сравнимое </span>с временем жизни материнских звезд, о гипотезе, практически означающей, что единожды возникшая <span style=\"background-color: rgb(255, 255, 0);\">цивилизация </span>существует на протяжении миллиардов лет.</p>", // Editor text
 		},
 
-		temporaryCommentArray: [],
-
+		analyticList: [],
+		
         };
 	},
 
@@ -127,19 +128,19 @@ export default {
 		
 		originalTextChanged(text) {
 
-			for (let i = 0; i < this.turn.actions.length; i++) {
-				this.temporaryCommentArray[i] = this.turn.actions[i].post.comment;
-			}
+			this.analyticList = [];
 			this.turn.actions = [];
 
 			let div = document.createElement('div');
+			
 			div.innerHTML = text.htmlValue;
+
 			const spans = div.querySelectorAll('span');
 
 			for (let i = 0; i < spans.length; i++) {
 				if (spans[i].style[0] === 'background-color') {
+					this.analyticList.push(spans[i].innerText);
 					this.turn.actions.push( {post: {quote: spans[i].innerText, editorIsVisible: true, id: i, comment: ''}} );
-					this.turn.actions[i].post.comment = this.temporaryCommentArray[i];
 				}
 			}
 		},
@@ -206,13 +207,3 @@ export default {
 
 
 </style>
-
-
-
-
-
-
-
-
-
-
