@@ -3,15 +3,15 @@
 	<div class="container-fluid">
 	<div class="row">
 
-		<div id="editorColumn" class="col-sm-5">
-				<h4 class="panel1HeaderText">Source Text</h4>
+		<div id="mainTextColumn" class="col-sm-5">
+				<h4 class="mainTextHeader">Main Text</h4>
 				<button v-show="editorMode" 
 						@click="editorToText">
 						Finished with quotes</button>
 				<Editor
 					v-show="editorMode"
 					v-model="turn.mainText"
-					@text-change="originalTextChanged($event)"
+					@text-change="mainTextChanged($event)"
 					editorStyle="height: 450px">
 					<template slot="toolbar">
 						<span class="ql-formats">
@@ -23,7 +23,7 @@
 				<div v-show="!editorMode">
 					<button @click="textToEditor">Back to editing</button>
 					<p></p>
-					<p class="pureText" v-html="turn.mainText"></p>
+					<p class="mainTextPure" v-html="turn.mainText"></p>
 				</div>
 		</div>
 
@@ -98,18 +98,18 @@ export default {
         return {
 
 		editorMode: true,
-		turn: {											// объект данного хода
-			actions: [									// массив действий
+		turn: {											
+			actions: [									
 				{   
 					post: {
 					id: 0,
-					quote: 'Some quote',
-					comment: 'Some comment goes here',
+					quote: '',
+					comment: '',
 					editorIsVisible: true,
 					},
 				},
 			],
-			mainText: "<p>Мы уже говорили о гипотезе, которая приписывает звездным цивилизациям время жизни, <span style=\"background-color: rgb(255, 255, 0);\">сравнимое </span>с временем жизни материнских звезд, о гипотезе, практически означающей, что единожды возникшая <span style=\"background-color: rgb(255, 255, 0);\">цивилизация </span>существует на протяжении миллиардов лет.</p>", // Editor text
+			mainText: "<p>Мы уже говорили о гипотезе, которая приписывает звездным цивилизациям время жизни, <span style=\"background-color: rgb(255, 255, 0);\">сравнимое </span>с временем жизни материнских звезд, о гипотезе, практически означающей, что единожды возникшая <span style=\"background-color: rgb(255, 255, 0);\">цивилизация </span>существует на протяжении миллиардов лет.</p>", 
 		},
 
 		temporaryCommentArray: [],
@@ -125,7 +125,7 @@ export default {
 			this.editorMode = false;
 		},
 		
-		originalTextChanged(text) {
+		mainTextChanged(text) {
 
 			for (let i = 0; i < this.turn.actions.length; i++) {
 				this.temporaryCommentArray[i] = this.turn.actions[i].post.comment;
@@ -153,13 +153,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.pureText {
+.mainTextPure {
 	text-align: left;
 }
-.panel1HeaderText {
+.mainTextHeader{
 	text-align: left;
 }
-#editorColumn {	
+#mainTextColumn {	
 	border: 0px solid blue;
 	padding-right: 7px;
 }
