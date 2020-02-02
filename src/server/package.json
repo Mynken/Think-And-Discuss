@@ -12,6 +12,7 @@
     "scripts": {
         "test": "mocha",
         "start": "nodemon app.js"
+        // "bug": "node ./node_modules/nodemon/bin/nodemon.js"
     },
     "dependencies": {
         "body-parser": "^1.18.3",
