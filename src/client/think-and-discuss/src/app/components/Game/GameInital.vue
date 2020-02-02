@@ -1,90 +1,80 @@
 <template>
 	
 	<div class="container-fluid">
-	<div class="row">
+    <div class="row">
 
-		<div id="mainTextColumn" class="col-sm-5">
-				<h4 class="mainTextHeader">Main Text</h4>
-				<button v-show="editorMode" 
-						@click="editorToText">
-						Finished with quotes</button>
-				<Editor
-					v-show="editorMode"
-					v-model="turn.mainText"
-					@text-change="mainTextChanged($event)"
-					editorStyle="height: 450px">
-					<template slot="toolbar">
-						<span class="ql-formats">
-<!--						<select class="ql-color"></select>					-->
-							<select class="ql-background"></select>
-						</span>
-					</template>
-				</Editor>
-				<div v-show="!editorMode">
-					<button @click="textToEditor">Back to editing</button>
-					<p></p>
-					<p class="mainTextPure" v-html="turn.mainText"></p>
-				</div>
-		</div>
-
-
-		<div id="rightHalfScreen" class="col-sm-7">
-			<div id="rightRows" class="row">
-				<div id="quotesHeader" class="col-sm-5">	
-					<h4>Quotes</h4>
-					<br>
-					<br>
-				</div>	
-				<div id="commentsHeader" class="col-sm-7">
-					<h4>Comments</h4>
-					<br>
-					<br>
-				</div>
-			</div>
-			
-			<div id="multipleRows" class="row" v-for="(item, i) in turn.actions" v-bind:key="i">
-
-				<div id="quotesColumn" class="col-sm-5">
-						<div>
-							<span class="example-1">{{ item.post.quote }} </span>
-							<p></p>
-						</div>
-						<br>
-				</div>
-			
-				<div id="commentsColumn" class="col-sm-7">
-					<div>       <!--  v-on:click="mouseOverComment(i)" --> 
-						<button v-if="item.post.editorIsVisible" @click="item.post.editorIsVisible = !item.post.editorIsVisible">Edit Comment</button>            
-						<button v-if="!item.post.editorIsVisible" @click="item.post.editorIsVisible = !item.post.editorIsVisible">Done</button>      
-						<Editor v-if="!item.post.editorIsVisible" v-model="item.post.comment">
-							<template slot="toolbar">
-								<span class="ql-formats">
-<!--								<select class="ql-color"></select>             -->
-									<select class="ql-background"></select>
-								</span>
-							</template>
-						</Editor>
-						<p v-if="item.post.editorIsVisible" v-html=" item.post.comment"></p>
-					</div>
-				</div>
+      <div id="mainTextColumn" class="col-sm-5">
+          <h4 class="mainTextHeader">Main Text</h4>
+          <button v-show="editorMode" 
+              @click="editorToText">
+              Finished with quotes</button>
+          <Editor
+            v-show="editorMode"
+            v-model="turn.mainText"
+            @text-change="mainTextChanged($event)"
+            editorStyle="height: 450px">
+            <template slot="toolbar">
+              <span class="ql-formats">
+  <!--						<select class="ql-color"></select>					-->
+                <select class="ql-background"></select>
+              </span>
+            </template>
+          </Editor>
+          <div v-show="!editorMode">
+            <button @click="textToEditor">Back to editing</button>
+            <p class="mainTextPure" v-html="turn.mainText"></p>
+          </div>
+      </div>
 
 
-			</div>
-		
-			<div class="miscVariables">
-				<hr>
-				<b>Misc. variables output:</b>
-				<p>Editor mode = {{ editorMode }}</p>
-				<div v-for="(item, i) in turn.actions" v-bind:key="i">
-					<p>{{ turn.actions[i].post.quote }}</p>	
-					<p>{{ turn.actions[i].post.comment }}</p>
-				</div>
-			</div>
-		</div>
+      <div id="rightHalfScreen" class="col-sm-7">
+        <div id="rightRows" class="row">
+          <div id="quotesHeader" class="col-sm-5">	
+            <h4>Quotes</h4>
+          </div>	
+          <div id="commentsHeader" class="col-sm-7">
+            <h4>Comments</h4>
+          </div>
+        </div>
+        
+        <div id="multipleRows" class="row" v-for="(item, i) in turn.actions" v-bind:key="i">
+
+          <div id="quotesColumn" class="col-sm-5">
+            <div>
+              <span class="example-1">{{ item.post.quote }} </span>
+            </div>
+          </div>
+        
+          <div id="commentsColumn" class="col-sm-7">
+            <div>       <!--  v-on:click="mouseOverComment(i)" --> 
+              <button v-if="item.post.editorIsVisible" @click="item.post.editorIsVisible = !item.post.editorIsVisible">Edit Comment</button>            
+              <button v-if="!item.post.editorIsVisible" @click="item.post.editorIsVisible = !item.post.editorIsVisible">Done</button>      
+              <Editor v-if="!item.post.editorIsVisible" v-model="item.post.comment">
+                <template slot="toolbar">
+                  <span class="ql-formats">
+  <!--								<select class="ql-color"></select>             -->
+                    <select class="ql-background"></select>
+                  </span>
+                </template>
+              </Editor>
+              <p v-if="item.post.editorIsVisible" v-html=" item.post.comment"></p>
+            </div>
+          </div>
+        </div>
+      
+        <div class="miscVariables">
+          <hr>
+          <b>Misc. variables output:</b>
+          <p>Editor mode = {{ editorMode }}</p>
+          <div v-for="(item, i) in turn.actions" v-bind:key="i">
+            <p>{{ turn.actions[i].post.quote }}</p>	
+            <p>{{ turn.actions[i].post.comment }}</p>
+          </div>
+        </div>
+      </div>
 
 
-	</div>
-
+    </div>
 	</div>
 
 
@@ -121,7 +111,8 @@ export default {
 		textToEditor() {
 			this.editorMode = true;
 		},
-		editorToText() {
+    
+    editorToText() {
 			this.editorMode = false;
 		},
 		
@@ -142,10 +133,8 @@ export default {
 					this.turn.actions[i].post.comment = this.temporaryCommentArray[i];
 				}
 			}
-		},
-
-
-
+    },
+    
 	},
 };
 </script>
@@ -168,6 +157,7 @@ export default {
 	text-align: left;
 	padding-left: 7px;
 	padding-right: 7px;
+  margin-bottom: 38px;
 }
 #quotesColumn {	
 	border: 0px solid blue;
@@ -179,6 +169,7 @@ export default {
 	border: 0px solid blue;
 	text-align: left;
 	padding-left: 7px;
+  margin-bottom: 38px;
 }
 #commentsColumn {
 	border: 0px solid blue;
@@ -191,7 +182,7 @@ export default {
 .miscVariables{
 	border: 0px solid blue;
 	text-align: left;
-	padding-left: 0px;
+	padding-left: 7px;
 }
 #rightHalfScreen {
 	padding-left: 7px;
