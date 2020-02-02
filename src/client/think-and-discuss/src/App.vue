@@ -1,8 +1,12 @@
+
 <template>
   <div id="app">
-    <p>Header</p>
-    <router-link to="/">Home</router-link>
-    <router-view></router-view>
+    <div id="header">
+        <p>Here will come some header with logo</p>
+        <router-link to="/">Home link</router-link>
+    </div>
+        <p></p>
+        <router-view></router-view>
     <div class="footer">Footer</div>
     <Toast/>
   </div>
@@ -16,12 +20,26 @@ export default {
 </script>
 
 <style>
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
+  border: 0px solid blue;
 }
+#header {
+  background-color: lightgrey;
+}
+.footer {
+  position: relative;
+  border: 0px solid blue;
+  background-color: lightgrey;
+  text-align: center;
+  height: 40px;
+}
+
+
 </style>
