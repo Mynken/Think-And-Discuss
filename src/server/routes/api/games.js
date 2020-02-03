@@ -4,7 +4,7 @@ const router = require('express').Router();
 const auth = require('../auth');
 const Games = mongoose.model('Games');
 
-router.post('/create', auth.required, (req, res, next) => {
+router.post('/create', auth.required, (req, res) => {
     const { body: { gameInfo } } = req;
     const finagameInfo = new Games(gameInfo);
 

@@ -8,9 +8,11 @@ const store = new Vuex.Store({
     // strict: true,
     strict: process.env.NODE_ENV !== 'production',
     state: {
-        id: '',
-        email: '',
-        token: ''
+        user: {
+            _id: '',
+            email: '',
+            token: ''
+        }
     },
     // mutations: {
     //     increment(state) {
@@ -22,6 +24,9 @@ const store = new Vuex.Store({
     },
     mutations: {
         updateField,
+        updateUserInfo(state, data) {
+            state.user = data.user;
+        }
     },
     // getters: {
     //     upCount: state => {

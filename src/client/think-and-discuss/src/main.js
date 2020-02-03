@@ -13,17 +13,18 @@ import Panel from 'primevue/panel';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 import Editor from 'primevue/editor';
+import Dropdown from 'primevue/dropdown';
 
 Vue.use(ToastService);
 
 Vue.use(new VueSocketIO({
     debug: true,
     connection: 'http://localhost:8000',
-    // vuex: {
-    //     store,
-    //     actionPrefix: 'SOCKET_',
-    //     mutationPrefix: 'SOCKET_'
-    // },
+    vuex: {
+        store,
+        actionPrefix: 'SOCKET_',
+        mutationPrefix: 'SOCKET_'
+    },
     // options: { path: "/my-app/" } //Optional options
 }));
 
@@ -33,14 +34,13 @@ Vue.component('Button', Button);
 Vue.component('Toast', Toast);
 Vue.component('Panel', Panel);
 Vue.component('Editor', Editor);
+Vue.component('Dropdown', Dropdown);
 
 Vue.config.productionTip = false;
 
 import 'primevue/resources/themes/nova-light/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
-
-Vue.config.productionTip = false;
 
 new Vue({
     render: h => h(App),

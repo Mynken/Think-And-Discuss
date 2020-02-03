@@ -5,6 +5,7 @@ import IntialForm from '../app/components/InitialForm.vue';
 import RegisterFrom from '../app/components/RegisterForm.vue';
 import Home from '../app/components/Home.vue';
 import GameInital from '../app/components/Game/GameInital.vue';
+import CreateGame from '../app/components/Game/CreateGame.vue';
 
 Vue.use(Router);
 
@@ -31,9 +32,14 @@ const router = new Router({
             component: Home
         },
         {
-            path: '/newGame',
-            name: 'newGame',
+            path: '/game/:id',
+            name: 'game',
             component: GameInital
+        },
+        {
+            path: '/createGame',
+            name: 'createGame',
+            component: CreateGame
         }
     ]
 });

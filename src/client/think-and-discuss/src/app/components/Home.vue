@@ -13,7 +13,7 @@
 export default {
     methods: {
     createGame() {
-      this.$router.push('/newGame');
+      this.$router.push('/createGame');
 		}
   },
       mounted() {

@@ -24,7 +24,7 @@ export default {
     },
     methods: {
     logIn() {
-      // TODO: check token and exp from localstorage or Vuex
+      // check token if exsist then no request
          axios.post('http://localhost:8000/api/users/login', {
             user: {
                 email: this.login,
@@ -32,15 +32,14 @@ export default {
             }
             })
             .then(res => {
-                this.$toast.add({severity: 'success', summary: res.data, detail: 'successfull login', life: 3000});
-                console.log(res.data);
+                this.$toast.add({severity: 'success', summary: res.data, detail: 'Successfull login', life: 3000});
+                this.$store.commit('updateUserInfo', res.data)
                 this.$router.push('/home');
                 });
 		}
   }
 }
-</script>a
+</script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>

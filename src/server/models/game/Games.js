@@ -3,7 +3,8 @@ const { Schema } = mongoose;
 
 const GamesSchema = new Schema({
     playersQuantity: Number,
-    name: String
+    name: String,
+    status: Number
 });
 
 mongoose.model('Games', GamesSchema);
