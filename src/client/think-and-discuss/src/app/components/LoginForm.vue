@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+
 export default {
   data() {
 		return {
@@ -25,7 +25,7 @@ export default {
     methods: {
     logIn() {
       // check token if exsist then no request
-         axios.post('http://localhost:8000/api/users/login', {
+         this.$http.post('http://localhost:8000/api/users/login', {
             user: {
                 email: this.login,
                 password: this.password

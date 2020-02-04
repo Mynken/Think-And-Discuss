@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 // import counter1 from './modules/user.module';
-import { getField, updateField } from 'vuex-map-fields';
+
 
 Vue.use(Vuex);
 const store = new Vuex.Store({
@@ -14,25 +14,17 @@ const store = new Vuex.Store({
             token: ''
         }
     },
-    // mutations: {
-    //     increment(state) {
-    //         state.count++;
-    //     }
-    // },
+
     getters: {
-        getField,
+        isAuthenticated: state => {
+            return !!state.user.token;
+          }
     },
     mutations: {
-        updateField,
         updateUserInfo(state, data) {
             state.user = data.user;
         }
     },
-    // getters: {
-    //     upCount: state => {
-    //         return state.count + 1;
-    //     }
-    // },
 
     // modules: {
     //     user: counter1,

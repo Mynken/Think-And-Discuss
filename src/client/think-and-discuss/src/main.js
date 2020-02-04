@@ -1,21 +1,16 @@
 import Vue from 'vue';
 import App from './App.vue';
-import router from './router/index';
+import router from './app/router/index';
 import store from './app/store/store';
 import VueSocketIO from 'vue-socket.io';
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'primevue/resources/themes/nova-light/theme.css';
+import 'primevue/resources/primevue.min.css';
+import 'primeicons/primeicons.css';
 
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import Panel from 'primevue/panel';
-import Toast from 'primevue/toast';
-import ToastService from 'primevue/toastservice';
-import Editor from 'primevue/editor';
-import Dropdown from 'primevue/dropdown';
-
-Vue.use(ToastService);
+Vue.config.productionTip = false;
 
 Vue.use(new VueSocketIO({
     debug: true,
@@ -28,19 +23,11 @@ Vue.use(new VueSocketIO({
     // options: { path: "/my-app/" } //Optional options
 }));
 
+import { configurePrimeComponents } from './app/utils/prime';
+import { configureErrorReporting } from './app/utils/axios';
 
-Vue.component('InputText', InputText);
-Vue.component('Button', Button);
-Vue.component('Toast', Toast);
-Vue.component('Panel', Panel);
-Vue.component('Editor', Editor);
-Vue.component('Dropdown', Dropdown);
-
-Vue.config.productionTip = false;
-
-import 'primevue/resources/themes/nova-light/theme.css';
-import 'primevue/resources/primevue.min.css';
-import 'primeicons/primeicons.css';
+configurePrimeComponents();
+configureErrorReporting();
 
 new Vue({
     render: h => h(App),
