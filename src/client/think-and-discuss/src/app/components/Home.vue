@@ -15,10 +15,7 @@ export default {
     createGame() {
       this.$router.push('/createGame');
 		}
-  },
-      mounted() {
-    this.$toast.add({severity: 'success', summary: 'home page loaded', detail: 'home page loaded', life: 5000});
-    }
+  }
 }
 </script>
 
