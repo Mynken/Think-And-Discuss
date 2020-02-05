@@ -1,8 +1,8 @@
 import consts from '../consts/consts';
 
-const routePrefix = consts.config.apiUrl + "api/game/";
+const routePrefix = consts.config.apiUrl + 'api/game/';
 import axios from 'axios';
-const returnData = r => r.data;
+//const returnData = r => r.data;
 
 export default class GameService {
 
@@ -11,7 +11,7 @@ export default class GameService {
     // }
 
     static create(model) {
-        return axios.post(`${routePrefix}create`, model).then(returnData);
+        return axios.post(`${routePrefix}create`, model);
     }
 
     // static execute(requestType, model, serialNumber) {

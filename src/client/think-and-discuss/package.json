@@ -46,7 +46,8 @@
         ],
         "rules": {
             "no-console": "off",
-            "no-debugger": "off"
+            "no-debugger": "off",
+            "quotes": ["error", "single"]
         },
         "parserOptions": {
             "parser": "babel-eslint"
