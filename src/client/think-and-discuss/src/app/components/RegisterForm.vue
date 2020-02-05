@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import userSrv from '../common/services/userService';
 export default {
   data() {
 		return {
@@ -24,22 +24,20 @@ export default {
     },
   methods: {
     register() {
-        axios.post('http://localhost:8000/api/users/', {
-            user: {
-                email: this.login,
-                password: this.password
-            }
-            })
-            .then(res => {
-                this.$toast.add({severity: 'success', summary: res.data, detail: 'User created', life: 3000});
-                console.log(res.data);
-                this.$router.push('/login');
-                });
+    const data = {
+          user: {
+            email: this.login,
+            password: this.password
+          }
+        };
+        userSrv.register(data).then(res => {
+          this.$alert.showSuccess(res.data, 'User created!');
+          this.$router.push('/login');
+        });
 		}
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>

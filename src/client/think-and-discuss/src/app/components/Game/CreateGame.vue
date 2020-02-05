@@ -12,56 +12,44 @@
       />
       <br />
       <br />
-      <Button label="Create new game" @click="createnewGame()" />
+      <Button label="Create new game" @click="createNewGame()" />
     </Panel>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import gameSrv from '../../common/services/gameService';
 export default {
   data() {
     return {
       // Array.from(Array(8), (_, x) => x + 1)
       cities: [
-        { name: "1", value: "1" },
-        { name: "2", value: "2" },
-        { name: "3", value: "3" },
-        { name: "4", value: "4" },
-        { name: "5", value: "5" },
-        { name: "6", value: "6" },
-        { name: "7", value: "7" },
-        { name: "8", value: "8" }
+        { name: '1', value: '1' },
+        { name: '2', value: '2' },
+        { name: '3', value: '3' },
+        { name: '4', value: '4' },
+        { name: '5', value: '5' },
+        { name: '6', value: '6' },
+        { name: '7', value: '7' },
+        { name: '8', value: '8' }
       ],
-      name: "",
+      name: '',
       playersQuantity: 0
     };
   },
   methods: {
-
-    createnewGame() {
-              console.log(this.$store);
-      axios
-        .post("http://localhost:8000/api/games/create", {
-          gameInfo: {
-            name: this.name,
-            playersQuantity: this.playersQuantity.value,
-            status: 1000
-          }, 
-         
-        }, { headers: {
-            Authorization: 'Token ' + this.$store.state.user.token
-          } })
-        .then(res => {
-          this.$toast.add({
-            severity: "success",
-            summary: res.data,
-            detail: "Game created",
-            life: 3000
-          });
-          console.log(res.data);
-          this.$router.push(`/game/${res.data.gameId}`);
-        });
+    createNewGame() {
+      const data = {
+        gameInfo: {
+          name: this.name,
+          playersQuantity: this.playersQuantity.value,
+          status: 1000
+        }
+      };
+      gameSrv.create(data).then(res => {
+        this.$alert.showSuccess(res.data, 'Game created');
+        this.$router.push(`/game/${res.data.gameId}`);
+      });
     }
   }
 };

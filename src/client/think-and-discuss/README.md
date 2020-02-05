@@ -25,3 +25,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 // node ./node_modules/@vue/cli-service\bin\vue-cli-service.js  serve
 // node ./node_modules/nodemon/bin/nodemon.js
+// node --inspect app.js
