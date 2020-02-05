@@ -1,9 +1,8 @@
-import Vue from 'vue';
 import axios from 'axios';
 import store from '../store/store';
+import alert from './toast';
 
 export function configureAxios() {
-
   axios.interceptors.request.use(config => {
     if (store.getters.isAuthenticated) {
       config.headers.Authorization = 'Token ' + store.state.user.token;
@@ -16,13 +15,8 @@ export function configureAxios() {
       return response;
     },
     function(error) {
-      console.log(error);
-      Vue.prototype.$toast.add({
-        severity: 'error',
-        summary: error.response.statusText,
-        detail: error.response.status,
-        life: 5000
-      });
+      console.log(error.response);
+      alert.showError(error.response.statusText, error.response.status);
       let originalRequest = error.config;
       // if (error.response.status === 401 && !originalRequest._retry) { // if the error is 401 and hasent already been retried
       //   originalRequest._retry = true // now it can be retried

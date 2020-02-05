@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import userService from '../common/services/userService';
+import userSrv from '../common/services/userService';
 export default {
   data() {
 		return {
@@ -30,13 +30,8 @@ export default {
             password: this.password
           }
         };
-        userService.register(data).then(res => {
-          this.$toast.add({
-            severity: 'success',
-            summary: res.data,
-            detail: 'User created!',
-            life: 3000
-          });
+        userSrv.register(data).then(res => {
+          this.$alert.showSuccess(res.data, 'User created!');
           this.$router.push('/login');
         });
 		}

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import gameService from '../../common/services/gameService';
+import gameSrv from '../../common/services/gameService';
 export default {
   data() {
     return {
@@ -46,13 +46,8 @@ export default {
           status: 1000
         }
       };
-      gameService.create(data).then(res => {
-        this.$toast.add({
-          severity: 'success',
-          summary: res.data,
-          detail: 'Game created',
-          life: 3000
-        });
+      gameSrv.create(data).then(res => {
+        this.$alert.showSuccess(res.data, 'Game created');
         this.$router.push(`/game/${res.data.gameId}`);
       });
     }

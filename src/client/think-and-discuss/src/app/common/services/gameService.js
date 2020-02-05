@@ -4,7 +4,7 @@ const routePrefix = consts.config.apiUrl + 'api/game/';
 import axios from 'axios';
 //const returnData = r => r.data;
 
-export default class GameService {
+export default class GameSrv {
 
     // static getCreateModel(requestType) {
     //     return axios.get(`${routePrefix}${requestType}/create`).then(returnData);

@@ -6,9 +6,7 @@
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint"
-        
     },
-    
     "dependencies": {
         "axios": "^0.19.0",
         "bootstrap": "^4.4.1",
@@ -47,7 +45,10 @@
         "rules": {
             "no-console": "off",
             "no-debugger": "off",
-            "quotes": ["error", "single"]
+            "quotes": [
+                "error",
+                "single"
+            ]
         },
         "parserOptions": {
             "parser": "babel-eslint"

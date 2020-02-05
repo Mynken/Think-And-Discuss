@@ -14,7 +14,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import userService from '../common/services/userService';
+import userSrv from '../common/services/userService';
 import { USER_UPDATE_INFO } from '../store/actions';
 
 export default {
@@ -37,13 +37,8 @@ export default {
           password: this.password
         }
       };
-      userService.logIn(data).then(res => {
-        this.$toast.add({
-          severity: 'success',
-          summary: 'Successfully loged in',
-          detail: 'Welcome back!',
-          life: 3000
-        });
+      userSrv.logIn(data).then(res => {
+        this.$alert.showSuccess('Successfully loged in', 'Welcome back!');
         this.updateUserInfo(res.data);
         this.$router.push('/home');
       });

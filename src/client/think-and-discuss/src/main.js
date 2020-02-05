@@ -29,6 +29,9 @@ import { configureAxios } from './app/utils/axios';
 configurePrimeComponents();
 configureAxios();
 
+import alert from './app/utils/toast';
+Vue.prototype.$alert = alert; 
+
 new Vue({
     render: h => h(App),
     router,
