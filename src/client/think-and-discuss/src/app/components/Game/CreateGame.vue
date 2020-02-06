@@ -6,7 +6,7 @@
       <h3>Players quantity</h3>
       <Dropdown
         v-model="playersQuantity"
-        :options="cities"
+        :options="playersQuantityList"
         optionLabel="name"
         placeholder="Сhoose"
       />
@@ -23,8 +23,7 @@ export default {
   data() {
     return {
       // Array.from(Array(8), (_, x) => x + 1)
-      cities: [
-        { name: '1', value: '1' },
+      playersQuantityList: [
         { name: '2', value: '2' },
         { name: '3', value: '3' },
         { name: '4', value: '4' },
