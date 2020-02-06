@@ -16,7 +16,7 @@ export function configureAxios() {
     },
     function(error) {
       console.log(error.response);
-      alert.showError(error.response.statusText, error.response.status);
+      alert.showError(error.response.statusText, error.response.status, 5000);
       let originalRequest = error.config;
       // if (error.response.status === 401 && !originalRequest._retry) { // if the error is 401 and hasent already been retried
       //   originalRequest._retry = true // now it can be retried

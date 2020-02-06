@@ -3,6 +3,8 @@ import App from './App.vue';
 import router from './app/router/index';
 import store from './app/store/store';
 import VueSocketIO from 'vue-socket.io';
+import Vuelidate from 'vuelidate';
+Vue.use(Vuelidate)
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';

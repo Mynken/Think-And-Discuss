@@ -12,6 +12,6 @@ export default class ToastSrv {
         Vue.prototype.$toast.add({severity:'warn', summary: summary, detail: detail, life: 3000});
     }
     static showError(summary, detail, time) {
-        Vue.prototype.$toast.add({severity:'error', summary: summary, detail: detail, life: time ? time : 5000});
+        Vue.prototype.$toast.add({severity:'error', summary: summary, detail: detail, life: time ? time : 3000});
     }
 }
