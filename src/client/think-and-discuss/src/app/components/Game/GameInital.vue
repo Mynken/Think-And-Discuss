@@ -21,7 +21,7 @@
             </template>
           </Editor>
           <div v-show="!editorMode">
-            <button @click="textToEditor">Back to editing</button>
+            <button @click="textToEditor">Back to editing</button>    
             <p class="mainTextPure" v-html="turn.mainText"></p>
           </div>
       </div>
@@ -37,39 +37,51 @@
           </div>
         </div>
         
-        <div id="multipleRows" class="row" v-for="(item, i) in turn.actions" v-bind:key="i">
+        <div id="multipleRows" class="row" v-for="(action, i) in turn.actions" v-bind:key="i">
 
           <div id="quotesColumn" class="col-sm-5">
             <div>
-              <span class="example-1">{{ item.post.quote }} </span>
+              <span class="example-1">{{ action.quote }} </span>
             </div>
           </div>
         
           <div id="commentsColumn" class="col-sm-7">
-            <div>       <!--  v-on:click="mouseOverComment(i)" --> 
-              <button v-if="item.post.editorIsVisible" @click="item.post.editorIsVisible = !item.post.editorIsVisible">Edit Comment</button>            
-              <button v-if="!item.post.editorIsVisible" @click="item.post.editorIsVisible = !item.post.editorIsVisible">Done</button>      
-              <Editor v-if="!item.post.editorIsVisible" v-model="item.post.comment">
-                <template slot="toolbar">
-                  <span class="ql-formats">
-  <!--								<select class="ql-color"></select>             -->
-                    <select class="ql-background"></select>
-                  </span>
-                </template>
-              </Editor>
-              <p v-if="item.post.editorIsVisible" v-html=" item.post.comment"></p>
+            <div v-for="(comment, j) in action.comments" v-bind:key="j">
+              <button v-if="!action.editorIsVisible" @click="action.editorIsVisible = !action.editorIsVisible">Edit Comment</button>            
+              <button v-if="action.editorIsVisible" @click="saveComments(i)">Done</button>   
+              
+              <div>  
+                <Editor v-if="action.editorIsVisible" v-model="action.temporaryText">
+                  <template slot="toolbar">
+                    <span class="ql-formats">
+    <!--								<select class="ql-color"></select>             -->
+                      <select class="ql-background"></select>
+                    </span>
+                  </template>
+                </Editor>
+                <p v-if="!action.editorIsVisible" v-html="action.comments[j]"></p>
+              </div>
+
+ <!--             <p>Comm: {{ action.comments }}</p>        -->
+ <!--             <p>Temp: {{ action.temporaryText }}</p>   -->
+
             </div>
           </div>
+
         </div>
       
         <div class="miscVariables">
           <hr>
           <b>Misc. variables output:</b>
+          <!--    
           <p>Editor mode = {{ editorMode }}</p>
-          <div v-for="(item, i) in turn.actions" v-bind:key="i">
-            <p>{{ turn.actions[i].post.quote }}</p>	
-            <p>{{ turn.actions[i].post.comment }}</p>
+          -->
+          <div v-for="(action, i) in turn.actions" v-bind:key="i">
+            <p>{{ action.quote }}</p>	
+            <p>{{ action.editorIsVisible }}</p>
+            <p v-for="(comment, j) in action.comments" v-bind:key="j">{{ comment }}</p>
           </div>
+-->
         </div>
       </div>
 
@@ -83,28 +95,23 @@
 <script>
 // import axios from 'axios';
 export default {
-    
-	data() {
-        return {
-
-		editorMode: true,
-		turn: {											
-			actions: [									
-				{   
-					post: {
-					id: 0,
-					quote: '',
-					comment: '',
-					editorIsVisible: true,
-					},
-				},
-			],
-			mainText: "<p>Мы уже говорили о гипотезе, которая приписывает звездным цивилизациям время жизни, <span style=\"background-color: rgb(255, 255, 0);\">сравнимое </span>с временем жизни материнских звезд, о гипотезе, практически означающей, что единожды возникшая <span style=\"background-color: rgb(255, 255, 0);\">цивилизация </span>существует на протяжении миллиардов лет.</p>", 
-		},
-
-		temporaryCommentArray: [],
-
-        };
+  data() {
+    return {
+      editorMode: true,
+      turn: {
+        actions: [
+          {
+            id: 0,
+            quote: "",
+            editorIsVisible: false,
+            comments: [],
+            temporaryText: "",
+          }
+        ],
+        mainText:
+          '<p>Мы уже говорили о гипотезе, которая приписывает звездным цивилизациям время жизни, <span style="background-color: rgb(255, 255, 0);">сравнимое </span>с временем жизни материнских звезд, о гипотезе, практически означающей, что единожды возникшая <span style="background-color: rgb(255, 255, 0);">цивилизация </span>существует на протяжении миллиардов лет.</p>' // Editor text
+      },
+    };
 	},
 
 	methods: {
@@ -116,24 +123,44 @@ export default {
 			this.editorMode = false;
 		},
 		
-		mainTextChanged(text) {
-
-			for (let i = 0; i < this.turn.actions.length; i++) {
-				this.temporaryCommentArray[i] = this.turn.actions[i].post.comment;
-			}
-			this.turn.actions = [];
-
-			let div = document.createElement('div');
-			div.innerHTML = text.htmlValue;
-			const spans = div.querySelectorAll('span');
-
-			for (let i = 0; i < spans.length; i++) {
-				if (spans[i].style[0] === 'background-color') {
-					this.turn.actions.push( {post: {quote: spans[i].innerText, editorIsVisible: true, id: i, comment: ''}} );
-					this.turn.actions[i].post.comment = this.temporaryCommentArray[i];
-				}
-			}
+    mainTextChanged(text) {      
+      
+      const oldModel = this.turn.actions;            // переписать turn.actions в резервный массив 
+      this.turn.actions = [];                        // стереть всё в turn.actions
+      let div = document.createElement("div");       
+      div.innerHTML = text.htmlValue;
+      const spans = div.querySelectorAll("span");    // выделение цветных цитат
+      for (let i = 0; i < spans.length; i++) {
+        if (spans[i].style[0] === "background-color") {   // если style == color
+          const index = oldModel.findIndex(x => x.quote === spans[i].innerText); 
+                                                     // то записать в резервный массив цитаты       
+          if (index !== -1) {                        // если больше ничего не найдено
+            this.turn.actions.push(oldModel[index]); 
+                                // то переписать этот элемент резервного массива в turn.actions
+            oldModel.splice(index, 1);     
+                                         // и выбросить этот элемент из резервного массива
+          } else {                       // а если найдено
+            this.turn.actions.push({     // то записать в turn.actions его значение
+              quote: spans[i].innerText,
+              editorIsVisible: false,
+              comments: ['']
+            });
+          }
+        }
+      }
     },
+
+    saveComments(i) {
+      for (let j = 0; j < this.turn.actions[i].comments.length; j++) {
+        if (this.turn.actions[i].comments[j] == '') {
+            this.turn.actions[i].comments.splice(j, 1);  // array garbage collector
+        }
+      }
+      this.turn.actions[i].comments.push(this.turn.actions[i].temporaryText);
+                                // переписать временный текст для цитаты в массив комментариев 
+      this.turn.actions[i].temporaryText = "";  // опустошить временный текст цитаты
+      this.turn.actions[i].editorIsVisible = !this.turn.actions[i].editorIsVisible;
+    }
     
 	},
 };
@@ -197,13 +224,3 @@ export default {
 
 
 </style>
-
-
-
-
-
-
-
-
-
-
