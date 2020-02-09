@@ -3,7 +3,6 @@
 		<div class="row">
 			<div id="mainTextColumn" class="col-sm-5">
 				<h4 class="mainTextHeader">Main Text</h4>
-				<Button v-show="editorMode" @click="editorToText" label="Finished with quotes" />
 				<Editor
 					v-show="editorMode"
 					v-model="turn.mainText"
@@ -17,9 +16,10 @@
 						</span>
 					</template>
 				</Editor>
+        <Button class="buttonFinishedWithQuotes" v-show="editorMode" @click="editorToText" label="Finished with quotes" />
 				<div v-show="!editorMode">
-					<Button @click="textToEditor" label="Back to editing" />
 					<p class="mainTextPure" v-html="turn.mainText"></p>
+          <Button class="buttonBackToEdit" @click="textToEditor" label="Back to editing" />
 				</div>
 			</div>
 
@@ -34,14 +34,15 @@
 				</div>
 
 				<div id="multipleRows" class="row" v-for="(action, i) in turn.actions" v-bind:key="i">
-					<div id="quotesColumn" class="col-sm-5">
+					<div id="quotesColumn" class="col-sm-4">
 						<div>
 							<span class="example-1">{{ action.quote }}</span>
 						</div>
 					</div>
 
-					<div id="commentsColumn" class="col-sm-7">
+					<div id="commentsColumn" class="col-sm-8">
 						<Button
+              class='buttonAddComment p-button-raised'
 							v-if="!action.editorIsVisible && action.comments.length < 5"
 							@click="action.editorIsVisible = !action.editorIsVisible"
 							label="Add Comment"
@@ -60,45 +61,26 @@
 						<template v-if="!action.editorIsVisible">
 							<div v-for="(comment, j) of action.comments" v-bind:key="comment" class="test">
 								<p v-html="comment"></p>
-								<Button @click="editComment(i, j)" label="Edit" />
+								<Button class="buttonEditComment" @click="editComment(i, j)" label="Edit" />
+                <Button @click="deleteComment(i, j)" label="Delete" />
 							</div>
 						</template>
 
-						<!-- <div v-for="(comment, j) in action.comments" v-bind:key="j">
-							<Button
-								v-if="!action.editorIsVisible"
-								@click="action.editorIsVisible = !action.editorIsVisible"
-								label="Edit Comment"
-							/>
-							<Button v-if="action.editorIsVisible" @click="saveComments(i)" label="Done" />
-
-							<div>
-								<Editor v-if="action.editorIsVisible" v-model="action.temporaryText">
-									<template slot="toolbar">
-										<span class="ql-formats">
-											<select class="ql-color"></select>
-											<select class="ql-background"></select>
-										</span>
-									</template>
-								</Editor>
-								<p v-if="!action.editorIsVisible" v-html="action.comments[j]"></p>
-							</div>
-						</div>-->
 					</div>
 				</div>
 
-				<div class="miscVariables">
+<!--		<div class="miscVariables">
 					<hr />
-					<b>Misc. variables output:</b>
-					<!--    
+					<b>Misc. variables output:</b> 
           <p>Editor mode = {{ editorMode }}</p>
-					-->
 					<div v-for="(action, i) in turn.actions" v-bind:key="i">
 						<p>{{ action.quote }}</p>
 						<p>{{ action.editorIsVisible }}</p>
 						<p v-for="(comment, j) in action.comments" v-bind:key="j">{{ comment }}</p>
-					</div>-->
+					</div>
 				</div>
+-->
+
 			</div>
 		</div>
 	</div>
@@ -138,28 +120,21 @@ export default {
 		},
 
 		mainTextChanged(text) {
-			const oldModel = this.turn.actions; // переписать turn.actions в резервный массив
-			this.turn.actions = []; // стереть всё в turn.actions
+			const oldModel = this.turn.actions;
+			this.turn.actions = [];
 			let div = document.createElement("div");
 			div.innerHTML = text.htmlValue;
-			const spans = div.querySelectorAll("span"); // выделение цветных цитат
+			const spans = div.querySelectorAll("span");
 			for (let i = 0; i < spans.length; i++) {
 				if (spans[i].style[0] === "background-color") {
-					// если style == color
 					const index = oldModel.findIndex(
 						x => x.quote === spans[i].innerText
 					);
-					// то записать в резервный массив цитаты
 					if (index !== -1) {
-						// если больше ничего не найдено
 						this.turn.actions.push(oldModel[index]);
-						// то переписать этот элемент резервного массива в turn.actions
 						oldModel.splice(index, 1);
-						// и выбросить этот элемент из резервного массива
 					} else {
-						// а если найдено
 						this.turn.actions.push({
-							// то записать в turn.actions его значение
 							quote: spans[i].innerText,
 							editorIsVisible: false,
 							comments: []
@@ -186,12 +161,6 @@ export default {
 			this.turn.actions[i].temporaryText = "";
 			this.turn.actions[i].editorIsVisible = !this.turn.actions[i]
 				.editorIsVisible;
-
-			// for (let j = 0; j < this.turn.actions[i].comments.length; j++) {
-			// 	if (this.turn.actions[i].comments[j] == "") {
-			// 		this.turn.actions[i].comments.splice(j, 1); // array garbage collector
-			// 	}
-			// }
 		},
 
 		editComment(i, j) {
@@ -199,21 +168,37 @@ export default {
 				.editorIsVisible;
 			this.turn.actions[i].fromEditMode = true;
 			this.turn.actions[i].indexOfEdittedComment = j;
-			this.turn.actions[i].temporaryText = this.turn.actions[i].comments[
-				j
-			];
-		}
+			this.turn.actions[i].temporaryText = this.turn.actions[i].comments[j];
+    },
+    deleteComment(i, j) {
+      this.turn.actions[i].comments.splice(j, 1);
+    },
 	}
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .mainTextPure {
 	text-align: left;
 }
 .mainTextHeader {
 	text-align: left;
+}
+.buttonAddComment {
+  float: right;
+  margin-bottom: 7px;
+}
+.buttonBackToEdit {
+  float: right;
+  margin: 7px 0px 17px 0px;
+}
+.buttonEditComment {
+  margin-right: 7px;
+}
+.buttonFinishedWithQuotes {
+  float: right;
+  margin: 7px 0px 17px 0px;
 }
 #mainTextColumn {
 	border: 0px solid blue;
@@ -222,21 +207,22 @@ export default {
 #quotesHeader {
 	border: 0px solid blue;
 	text-align: left;
-	padding-left: 7px;
+	padding-left: 17px;
 	padding-right: 7px;
-	margin-bottom: 38px;
+	margin-bottom: 12px;
 }
 #quotesColumn {
 	border: 0px solid blue;
 	text-align: left;
-	padding-left: 7px;
+	padding-left: 17px;
 	padding-right: 7px;
+  padding-top: 7px;
 }
 #commentsHeader {
 	border: 0px solid blue;
 	text-align: left;
 	padding-left: 7px;
-	margin-bottom: 38px;
+	margin-bottom: 12px;
 }
 #commentsColumn {
 	border: 0px solid blue;
