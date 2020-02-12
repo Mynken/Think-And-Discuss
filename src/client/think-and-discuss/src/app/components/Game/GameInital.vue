@@ -180,7 +180,7 @@ export default {
 </script>
 
 <!-- "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 .mainTextPure {
 	text-align: left;
 }
@@ -263,5 +263,9 @@ export default {
 
 .test {
 	padding-bottom: 5px;
+}
+
+.ql-snow .ql-editor img {
+  width: 100% !important;
 }
 </style>
