@@ -16,10 +16,10 @@
 						</span>
 					</template>
 				</Editor>
-        <Button class="buttonFinishedWithQuotes" v-show="editorMode" @click="editorToText" label="Finished with quotes" />
+        <Button class="buttonFinishedWithQuotes p-button-raised p-button-secondary" v-show="editorMode" @click="editorToText" label="Finished with quotes" />
 				<div v-show="!editorMode">
 					<p class="mainTextPure" v-html="turn.mainText"></p>
-          <Button class="buttonBackToEdit" @click="textToEditor" label="Back to editing" />
+          <Button class="buttonBackToEdit p-button-raised p-button-secondary" @click="textToEditor" label="Back to editing" />
 				</div>
 			</div>
 
@@ -36,17 +36,19 @@
 				<div id="multipleRows" class="row" v-for="(action, i) in turn.actions" v-bind:key="i">
 					<div id="quotesColumn" class="col-sm-4">
 						<div>
-							<span class="example-1">{{ action.quote }}</span>
+              <div>
+                <span class="example-1">{{ action.quote }}</span>
+              </div>
+              <Button
+                class="buttonAddComment p-button-raised p-button-secondary"
+                v-if="!action.editorIsVisible && action.comments.length < 5"
+                @click="action.editorIsVisible = !action.editorIsVisible"
+                label="Add Comment"
+              />
 						</div>
 					</div>
 
 					<div id="commentsColumn" class="col-sm-8">
-						<Button
-              class='buttonAddComment p-button-raised'
-							v-if="!action.editorIsVisible && action.comments.length < 5"
-							@click="action.editorIsVisible = !action.editorIsVisible"
-							label="Add Comment"
-						/>
 
 						<Editor v-model="action.temporaryText" v-if="action.editorIsVisible">
 							<template slot="toolbar">
@@ -56,13 +58,13 @@
 								</span>
 							</template>
 						</Editor>
-						<Button label="Save" v-if="action.editorIsVisible" @click="saveComment(i)" />
+						<Button class="buttonSave p-button-raised p-button-secondary" label="Save" v-if="action.editorIsVisible" @click="saveComment(i)" />
 
 						<template v-if="!action.editorIsVisible">
 							<div v-for="(comment, j) of action.comments" v-bind:key="comment" class="test">
-								<p v-html="comment"></p>
-								<Button class="buttonEditComment" @click="editComment(i, j)" label="Edit" />
-                <Button @click="deleteComment(i, j)" label="Delete" />
+								<span class = "comment" v-html="comment"></span>
+								<Button class="buttonEditComment p-button-raised p-button-secondary" @click="editComment(i, j)" label="Edit" />
+                <Button class="buttonDeleteComment p-button-raised p-button-secondary" @click="deleteComment(i, j)" label="Delete" />
 							</div>
 						</template>
 
@@ -96,17 +98,17 @@ export default {
 				actions: [
 					{
 						id: 0,
-						quote: "",
+						quote: '',
 						editorIsVisible: false,
 						comments: [],
-						temporaryText: "",
+						temporaryText: '',
 						fromEditMode: false,
 						indexOfEdittedComment: -1
 					}
 				],
 				mainText:
-					'<p>Мы уже говорили о гипотезе, которая приписывает звездным цивилизациям время жизни, <span style="background-color: rgb(255, 255, 0);">сравнимое </span>с временем жизни материнских звезд, о гипотезе, практически означающей, что единожды возникшая <span style="background-color: rgb(255, 255, 0);">цивилизация </span>существует на протяжении миллиардов лет.</p>' // Editor text
-			}
+					'<p>Мы уже говорили о гипотезе, которая приписывает звездным цивилизациям время жизни, <span style="background-color: rgb(255, 255, 0);">сравнимое </span>с временем жизни материнских звезд, о гипотезе, практически означающей, что единожды возникшая <span style="background-color: rgb(255, 255, 0);">цивилизация </span>существует на протяжении миллиардов лет.</p>' 
+      },
 		};
 	},
 
@@ -153,12 +155,12 @@ export default {
 				this.turn.actions[i].fromEditMode = false;
 				this.turn.actions[i].indexOfEdittedComment = -1;
 			} else {
-				this.turn.actions[i].comments.push(
+          this.turn.actions[i].comments.push(
 					this.turn.actions[i].temporaryText
 				);
-			}
-
-			this.turn.actions[i].temporaryText = "";
+      }
+      // console.log(this.turn.actions[i].temporaryText)
+			this.turn.actions[i].temporaryText = '';
 			this.turn.actions[i].editorIsVisible = !this.turn.actions[i]
 				.editorIsVisible;
 		},
@@ -187,7 +189,7 @@ export default {
 }
 .buttonAddComment {
   float: right;
-  margin-bottom: 7px;
+  margin: 7px 0px 7px 0px;
 }
 .buttonBackToEdit {
   float: right;
@@ -199,6 +201,10 @@ export default {
 .buttonFinishedWithQuotes {
   float: right;
   margin: 7px 0px 17px 0px;
+}
+.buttonSave{
+  margin: 7px 0px 7px 0px;
+  padding-bottom: 0px;
 }
 #mainTextColumn {
 	border: 0px solid blue;
@@ -228,7 +234,15 @@ export default {
 	border: 0px solid blue;
 	text-align: left;
 	padding-left: 7px;
+  padding-top: 7px;
 }
+
+.comment {
+  width: full-width;
+  position: relative;
+  margin: 0px 0px 0px 0px;
+}
+
 .example-1 {
 	background-color: yellow;
 }
