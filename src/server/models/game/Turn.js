@@ -1,14 +1,9 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const TurnsSchema = new Schema({
+const TurnSchema = new Schema({
     gameId: String,
-    actions: [{
-        id: String, // maybe
-        quote: String,
-        comments: [String]
-    }],
-    mainText: String
+    turn: Schema.Types.Mixed
 });
 
-mongoose.model('Turns', TurnsSchema);
+mongoose.model('Turn', TurnSchema);

@@ -14,6 +14,10 @@ export default class GameSrv {
         return axios.post(`${routePrefix}create`, model);
     }
 
+    static saveTurn(model) {
+        return axios.post(`${routePrefix}saveTurn`, model);
+    }
+
     // static execute(requestType, model, serialNumber) {
     //     return axios
     //         .put(`${routePrefix}${requestType}/execute/${serialNumber}`, model)

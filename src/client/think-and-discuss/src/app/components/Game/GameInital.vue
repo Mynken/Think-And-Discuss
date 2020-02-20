@@ -16,10 +16,19 @@
 						</span>
 					</template>
 				</Editor>
-        <Button class="buttonFinishedWithQuotes p-button-raised p-button-secondary" v-show="editorMode" @click="editorToText" label="Finished with quotes" />
+				<Button
+					class="buttonFinishedWithQuotes p-button-raised p-button-secondary"
+					v-show="editorMode"
+					@click="editorToText"
+					label="Finished with quotes"
+				/>
 				<div v-show="!editorMode">
 					<p class="mainTextPure" v-html="turn.mainText"></p>
-          <Button class="buttonBackToEdit p-button-raised p-button-secondary" @click="textToEditor" label="Back to editing" />
+					<Button
+						class="buttonBackToEdit p-button-raised p-button-secondary"
+						@click="textToEditor"
+						label="Back to editing"
+					/>
 				</div>
 			</div>
 
@@ -36,20 +45,19 @@
 				<div id="multipleRows" class="row" v-for="(action, i) in turn.actions" v-bind:key="i">
 					<div id="quotesColumn" class="col-sm-4">
 						<div>
-              <div>
-                <span class="example-1">{{ action.quote }}</span>
-              </div>
-              <Button
-                class="buttonAddComment p-button-raised p-button-secondary"
-                v-if="!action.editorIsVisible && action.comments.length < 5"
-                @click="action.editorIsVisible = !action.editorIsVisible"
-                label="Add Comment"
-              />
+							<div>
+								<span class="example-1">{{ action.quote }}</span>
+							</div>
+							<Button
+								class="buttonAddComment p-button-raised p-button-secondary"
+								v-if="!action.editorIsVisible && action.comments.length < 5"
+								@click="action.editorIsVisible = !action.editorIsVisible"
+								label="Add Comment"
+							/>
 						</div>
 					</div>
 
 					<div id="commentsColumn" class="col-sm-8">
-
 						<Editor v-model="action.temporaryText" v-if="action.editorIsVisible">
 							<template slot="toolbar">
 								<span class="ql-formats">
@@ -58,20 +66,35 @@
 								</span>
 							</template>
 						</Editor>
-						<Button class="buttonSave p-button-raised p-button-secondary" label="Save" v-if="action.editorIsVisible" @click="saveComment(i)" />
+						<Button
+							class="buttonSave p-button-raised p-button-secondary"
+							label="Save"
+							v-if="action.editorIsVisible"
+							@click="saveComment(i)"
+						/>
 
 						<template v-if="!action.editorIsVisible">
 							<div v-for="(comment, j) of action.comments" v-bind:key="comment" class="test">
-								<span class = "comment" v-html="comment"></span>
-								<Button class="buttonEditComment p-button-raised p-button-secondary" @click="editComment(i, j)" label="Edit" />
-                <Button class="buttonDeleteComment p-button-raised p-button-secondary" @click="deleteComment(i, j)" label="Delete" />
+								<span class="comment" v-html="comment"></span>
+								<Button
+									class="buttonEditComment p-button-raised p-button-secondary"
+									@click="editComment(i, j)"
+									label="Edit"
+								/>
+								<Button
+									class="buttonDeleteComment p-button-raised p-button-secondary"
+									@click="deleteComment(i, j)"
+									label="Delete"
+								/>
 							</div>
 						</template>
-
 					</div>
 				</div>
-
-<!--		<div class="miscVariables">
+			<Button
+			@click="saveTurn()"
+			label="Save turn"
+			/>
+				<!--		<div class="miscVariables">
 					<hr />
 					<b>Misc. variables output:</b> 
           <p>Editor mode = {{ editorMode }}</p>
@@ -81,15 +104,15 @@
 						<p v-for="(comment, j) in action.comments" v-bind:key="j">{{ comment }}</p>
 					</div>
 				</div>
--->
-
+				-->
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-// import axios from 'axios';
+import gameSrv from '../../common/services/gameService';
+
 export default {
 	data() {
 		return {
@@ -107,8 +130,8 @@ export default {
 					}
 				],
 				mainText:
-					'<p>Мы уже говорили о гипотезе, которая приписывает звездным цивилизациям время жизни, <span style="background-color: rgb(255, 255, 0);">сравнимое </span>с временем жизни материнских звезд, о гипотезе, практически означающей, что единожды возникшая <span style="background-color: rgb(255, 255, 0);">цивилизация </span>существует на протяжении миллиардов лет.</p>' 
-      },
+					'<p>Мы уже говорили о гипотезе, которая приписывает звездным цивилизациям время жизни, <span style="background-color: rgb(255, 255, 0);">сравнимое </span>с временем жизни материнских звезд, о гипотезе, практически означающей, что единожды возникшая <span style="background-color: rgb(255, 255, 0);">цивилизация </span>существует на протяжении миллиардов лет.</p>'
+			}
 		};
 	},
 
@@ -124,11 +147,11 @@ export default {
 		mainTextChanged(text) {
 			const oldModel = this.turn.actions;
 			this.turn.actions = [];
-			let div = document.createElement("div");
+			let div = document.createElement('div');
 			div.innerHTML = text.htmlValue;
-			const spans = div.querySelectorAll("span");
+			const spans = div.querySelectorAll('span');
 			for (let i = 0; i < spans.length; i++) {
-				if (spans[i].style[0] === "background-color") {
+				if (spans[i].style[0] === 'background-color') {
 					const index = oldModel.findIndex(
 						x => x.quote === spans[i].innerText
 					);
@@ -155,11 +178,11 @@ export default {
 				this.turn.actions[i].fromEditMode = false;
 				this.turn.actions[i].indexOfEdittedComment = -1;
 			} else {
-          this.turn.actions[i].comments.push(
+				this.turn.actions[i].comments.push(
 					this.turn.actions[i].temporaryText
 				);
-      }
-      // console.log(this.turn.actions[i].temporaryText)
+			}
+			// console.log(this.turn.actions[i].temporaryText)
 			this.turn.actions[i].temporaryText = '';
 			this.turn.actions[i].editorIsVisible = !this.turn.actions[i]
 				.editorIsVisible;
@@ -170,11 +193,28 @@ export default {
 				.editorIsVisible;
 			this.turn.actions[i].fromEditMode = true;
 			this.turn.actions[i].indexOfEdittedComment = j;
-			this.turn.actions[i].temporaryText = this.turn.actions[i].comments[j];
-    },
-    deleteComment(i, j) {
-      this.turn.actions[i].comments.splice(j, 1);
-    },
+			this.turn.actions[i].temporaryText = this.turn.actions[i].comments[
+				j
+			];
+		},
+		deleteComment(i, j) {
+			this.turn.actions[i].comments.splice(j, 1);
+		},
+
+		saveTurn() {
+			const data = {
+				newTurn: {
+					gameId: this.$route.params.id,
+					turn: this.turn
+				}
+			};
+
+
+			gameSrv.saveTurn(data).then(res => {
+			this.$alert.showSuccess(res.data, 'Turn saved');
+			this.$router.push('/home');
+			});
+		}
 	}
 };
 </script>
@@ -188,23 +228,23 @@ export default {
 	text-align: left;
 }
 .buttonAddComment {
-  float: right;
-  margin: 7px 0px 7px 0px;
+	float: right;
+	margin: 7px 0px 7px 0px;
 }
 .buttonBackToEdit {
-  float: right;
-  margin: 7px 0px 17px 0px;
+	float: right;
+	margin: 7px 0px 17px 0px;
 }
 .buttonEditComment {
-  margin-right: 7px;
+	margin-right: 7px;
 }
 .buttonFinishedWithQuotes {
-  float: right;
-  margin: 7px 0px 17px 0px;
+	float: right;
+	margin: 7px 0px 17px 0px;
 }
-.buttonSave{
-  margin: 7px 0px 7px 0px;
-  padding-bottom: 0px;
+.buttonSave {
+	margin: 7px 0px 7px 0px;
+	padding-bottom: 0px;
 }
 #mainTextColumn {
 	border: 0px solid blue;
@@ -222,7 +262,7 @@ export default {
 	text-align: left;
 	padding-left: 17px;
 	padding-right: 7px;
-  padding-top: 7px;
+	padding-top: 7px;
 }
 #commentsHeader {
 	border: 0px solid blue;
@@ -234,13 +274,13 @@ export default {
 	border: 0px solid blue;
 	text-align: left;
 	padding-left: 7px;
-  padding-top: 7px;
+	padding-top: 7px;
 }
 
 .comment {
-  width: full-width;
-  position: relative;
-  margin: 0px 0px 0px 0px;
+	width: full-width;
+	position: relative;
+	margin: 0px 0px 0px 0px;
 }
 
 .example-1 {
@@ -269,9 +309,9 @@ export default {
 	text-align: left;
 	padding-left: 7px;
 	padding-right: 7px;
-  margin-bottom: 38px;
+	margin-bottom: 38px;
 }
-#quotesColumn {	
+#quotesColumn {
 	border: 0px solid blue;
 	text-align: left;
 	padding-left: 7px;
@@ -281,7 +321,7 @@ export default {
 	border: 0px solid blue;
 	text-align: left;
 	padding-left: 7px;
-  margin-bottom: 38px;
+	margin-bottom: 38px;
 }
 #commentsColumn {
 	border: 0px solid blue;
@@ -291,16 +331,15 @@ export default {
 .example-1 {
 	background-color: yellow;
 }
-.miscVariables{
+.miscVariables {
 	border: 0px solid blue;
 	text-align: left;
 	padding-left: 7px;
 }
 #rightHalfScreen {
 	padding-left: 7px;
-
 }
-#rightRows{
+#rightRows {
 	padding-left: 7px;
 }
 #multipleRows {
@@ -308,6 +347,6 @@ export default {
 }
 
 .ql-snow .ql-editor img {
-  width: 100% !important;
+	width: 100% !important;
 }
 </style>
