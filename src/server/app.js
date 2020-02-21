@@ -36,6 +36,8 @@ mongoose.set('debug', true);
 
 //Models & routes
 require('./models/Users');
+require('./models/game/Games');
+require('./models/game/Turn');
 require('./config/passport');
 app.use(require('./routes'));
 
@@ -64,7 +66,7 @@ app.use(require('./routes'));
 //         },
 //     });
 // });
-
+// "bug": "node ./node_modules/nodemon/bin/nodemon.js"
 server.listen(8000, () => console.log('Server running on http://localhost:8000/'));
 // server.listen(8012);
 

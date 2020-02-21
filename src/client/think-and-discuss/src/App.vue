@@ -3,9 +3,8 @@
   <div id="app">
     <div id="header">
         <p>Here will come some header with logo</p>
-        <router-link to="/">Home link</router-link>
+        <router-link to="/home">Home link</router-link>
     </div>
-        <p></p>
         <router-view></router-view>
     <div class="footer">Footer</div>
     <Toast/>
@@ -34,7 +33,6 @@ export default {
   background-color: lightgrey;
 }
 .footer {
-  position: relative;
   border: 0px solid blue;
   background-color: lightgrey;
   text-align: center;
