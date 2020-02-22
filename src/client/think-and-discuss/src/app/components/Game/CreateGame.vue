@@ -52,7 +52,7 @@ export default {
     playersQuantity: {
       value: {
         required,
-        between: between(2, 8)
+        between: between(1, 8)
       }
     }
   },
