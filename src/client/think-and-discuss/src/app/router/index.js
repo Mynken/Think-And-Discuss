@@ -6,6 +6,7 @@ import IntialForm from '../components/InitialForm';
 import RegisterFrom from '../components/RegisterForm';
 import Home from '../components/Home';
 import GameInital from '../components/Game/GameInital';
+import GameScreen from '../components/Game/GameScreen';
 import CreateGame from '../components/Game/CreateGame';
 import NotFound from '../components/common/NotFound';
 
@@ -13,7 +14,8 @@ Vue.use(Router);
 
 const router = new Router({
     mode: 'history',
-    routes: [{
+    routes: [
+        {
             path: '/',
             name: 'Welcome',
             component: IntialForm,
@@ -40,12 +42,20 @@ const router = new Router({
             }
         },
         {
-            path: '/game/:id',
-            name: 'game',
-            component: GameInital,
+            path: '/game/turns',
+            name: 'gameScreen',
+            component: GameScreen,
             meta: { 
                 requiresAuth: true
             }
+        },
+        {
+          path: '/game/:id',
+          name: 'game',
+          component: GameInital,
+          meta: { 
+              requiresAuth: true
+          }
         },
         {
             path: '/createGame',

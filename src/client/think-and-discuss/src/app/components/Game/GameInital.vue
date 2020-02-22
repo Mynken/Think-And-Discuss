@@ -209,11 +209,9 @@ export default {
 				}
 			};
 
-
-			gameSrv.saveTurn(data).then(res => {
-			this.$alert.showSuccess(res.data, 'Turn saved');
-			this.$router.push('/home');
-			});
+        this.$alert.showSuccess(res.data, 'Turn saved');
+        this.$router.push('/game/turns');
+      });
 		}
 	}
 };
